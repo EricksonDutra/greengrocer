@@ -111,9 +111,9 @@ class SignInScreen extends StatelessWidget {
                                         String password = _passwordController.text;
                                         authController.signIn(email: email, password: password);
 
-                                        if (email == 'email@email.com' && password == '12345') {
-                                          Get.toNamed(PagesRoutes.baseRoute);
-                                        }
+                                        // if (email == 'email@email.com' && password == '12345') {
+                                        //   Get.toNamed(PagesRoutes.baseRoute);
+                                        // }
                                       } else {
                                         null;
                                       }
