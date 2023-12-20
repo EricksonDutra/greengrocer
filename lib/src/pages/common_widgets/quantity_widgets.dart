@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:greengrocer/src/config/custom_colors.dart';
 
 class QuantityWidget extends StatelessWidget {
@@ -74,11 +76,11 @@ class _quantityButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _quantityButton({
-    super.key,
+    Key? key,
     required this.color,
     required this.icon,
     required this.onPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
