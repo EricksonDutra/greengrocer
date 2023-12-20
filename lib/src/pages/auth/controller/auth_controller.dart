@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:greengrocer/src/constants/storage_keys.dart';
+import 'package:greengrocer/src/models/user_model.dart';
 import 'package:greengrocer/src/pages/auth/repository/auth_repository.dart';
 import 'package:greengrocer/src/pages/auth/result/auth_result.dart';
+import 'package:greengrocer/src/routes/app_pages.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 class AuthController extends GetxController {
@@ -8,6 +11,56 @@ class AuthController extends GetxController {
 
   final authRepository = AuthRepository();
   final utilServices = UtilsServices();
+
+  UserModel user = UserModel();
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    validateToken();
+  }
+
+  Future<void> validateToken() async {
+    String? token = await utilServices.getLocalData(key: StorageKeys.token);
+
+    if (token == null) {
+      Get.offAllNamed(PagesRoutes.signInRoute);
+      return;
+    }
+
+    AuthResult result = await authRepository.validateToken(token);
+
+    result.when(
+      success: (user) {
+        this.user = user;
+        saveTokenAndPrecedToBase();
+      },
+      error: (msg) {
+        Future<void> signOut() async {
+          //Zerar o user
+          user = UserModel();
+
+          //Remover o token localmente
+          await utilServices.removeLocalData(key: StorageKeys.token);
+
+          //Ir para o login
+          Get.offAllNamed(PagesRoutes.signInRoute);
+        }
+
+        ;
+      },
+    );
+    // authRepository.validateToken(token);
+  }
+
+  void saveTokenAndPrecedToBase() {
+    //salvar o token
+    utilServices.saveLocalData(key: StorageKeys.token, data: user.token!);
+
+    //Ir para a tela base
+    Get.offAllNamed(PagesRoutes.baseRoute);
+  }
 
   Future<void> signIn({required String email, required String password}) async {
     isLoading.value = true;
@@ -18,7 +71,9 @@ class AuthController extends GetxController {
 
     result.when(
       success: (user) {
-        print(user);
+        this.user = user;
+
+        saveTokenAndPrecedToBase();
       },
       error: (message) {
         utilServices.showToast(
