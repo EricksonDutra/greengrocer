@@ -6,6 +6,7 @@ import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/common_widgets/input_field_widget.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/routes/app_pages.dart';
+import 'package:greengrocer/src/services/validators.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -75,24 +76,14 @@ class SignInScreen extends StatelessWidget {
                         controller: _emailController,
                         icon: const Icon(Icons.email),
                         label: 'Email',
-                        validator: (email) {
-                          if (email == null || email.isEmpty) return 'Digite seu email';
-
-                          if (!email.isEmail) return 'Digite um email válido';
-                          return null;
-                        },
+                        validator: emailValidator,
                       ),
                       InputFieldWidget(
                         controller: _passwordController,
                         icon: const Icon(Icons.lock),
                         label: 'Senha',
                         isSecret: true,
-                        validator: (senha) {
-                          if (senha == null || senha.isEmpty) return 'Digite seu senha!!';
-
-                          if (senha.length < 5) return 'A senha deve conter pelo menos 5 dígitos!!';
-                          return null;
-                        },
+                        validator: passwordValidador,
                       ),
 
                       //Button Entrar
@@ -110,10 +101,6 @@ class SignInScreen extends StatelessWidget {
                                         String email = _emailController.text;
                                         String password = _passwordController.text;
                                         authController.signIn(email: email, password: password);
-
-                                        // if (email == 'email@email.com' && password == '12345') {
-                                        //   Get.toNamed(PagesRoutes.baseRoute);
-                                        // }
                                       } else {
                                         null;
                                       }

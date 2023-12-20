@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src/pages/common_widgets/input_field_widget.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/services/validators.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
+
+  final _formKey = GlobalKey<FormState>();
 
   final cpfFormatter = MaskTextInputFormatter(
     mask: '###.###.###-##',
@@ -54,50 +57,63 @@ class SignUpScreen extends StatelessWidget {
                         top: Radius.circular(45),
                       ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const InputFieldWidget(
-                          icon: Icon(Icons.email),
-                          label: 'Email',
-                        ),
-                        const InputFieldWidget(
-                          icon: Icon(Icons.lock),
-                          label: 'Senha',
-                          isSecret: true,
-                        ),
-                        const InputFieldWidget(
-                          icon: Icon(Icons.person),
-                          label: 'Nome',
-                        ),
-                        InputFieldWidget(
-                          icon: const Icon(Icons.phone),
-                          label: 'Celular',
-                          inputFormatters: [phoneFormatter],
-                        ),
-                        InputFieldWidget(
-                          icon: const Icon(Icons.file_copy),
-                          label: 'CPF',
-                          inputFormatters: [cpfFormatter],
-                        ),
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const InputFieldWidget(
+                            icon: Icon(Icons.email),
+                            label: 'Email',
+                            keyboarType: TextInputType.emailAddress,
+                            validator: emailValidator,
+                          ),
+                          const InputFieldWidget(
+                            icon: Icon(Icons.lock),
+                            label: 'Senha',
+                            isSecret: true,
+                            validator: passwordValidador,
+                          ),
+                          const InputFieldWidget(
+                            icon: Icon(Icons.person),
+                            label: 'Nome',
+                            validator: nameValidator,
+                          ),
+                          InputFieldWidget(
+                            icon: const Icon(Icons.phone),
+                            label: 'Celular',
+                            keyboarType: TextInputType.phone,
+                            inputFormatters: [phoneFormatter],
+                            validator: phoneValidator,
+                          ),
+                          InputFieldWidget(
+                            icon: const Icon(Icons.file_copy),
+                            label: 'CPF',
+                            keyboarType: TextInputType.number,
+                            inputFormatters: [cpfFormatter],
+                            validator: cpfValidator,
+                          ),
+                          SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
                               ),
-                            ),
-                            onPressed: () {},
-                            child: const Text(
-                              'Cadastrar usuário',
-                              style: TextStyle(
-                                fontSize: 18,
+                              onPressed: () {
+                                _formKey.currentState!.validate();
+                              },
+                              child: const Text(
+                                'Cadastrar usuário',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src/pages/common_widgets/payment_dialog.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
@@ -44,86 +42,88 @@ class _CartTabState extends State<CartTab> {
         ),
         backgroundColor: Colors.green,
       ),
-      body: Column(children: [
-        Expanded(
-          child: ListView.builder(
-            itemBuilder: (_, i) {
-              return CartTile(
-                cartItem: appData.cartItems[i],
-                remove: removeItemFromCart,
-              );
-            },
-            itemCount: appData.cartItems.length,
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade300,
-                blurRadius: 3,
-                spreadRadius: 2,
-              ),
-            ],
-            color: Colors.white,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(30),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (_, i) {
+                return CartTile(
+                  cartItem: appData.cartItems[i],
+                  remove: removeItemFromCart,
+                );
+              },
+              itemCount: appData.cartItems.length,
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'Total Geral',
-                style: TextStyle(
-                  fontSize: 12,
-                ),
-              ),
-              Text(
-                utilsServices.priceToCurrency(cartTotalPrice()),
-                style: TextStyle(
-                  fontSize: 23,
-                  color: CustomColors.customSwatchColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                  onPressed: () async {
-                    bool? result = await showOrderConfirmation();
-                    if (result ?? false) {
-                      showDialog(
-                        context: context,
-                        builder: (_) {
-                          return PaymentDialog(
-                            order: appData.orders.first,
-                          );
-                        },
-                      );
-                    }
-                  },
-                  child: const Text(
-                    'Concluir pedido',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              )
-            ],
+          const SizedBox(
+            height: 20,
           ),
-        )
-      ]),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade300,
+                  blurRadius: 3,
+                  spreadRadius: 2,
+                ),
+              ],
+              color: Colors.white,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(30),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Total Geral',
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  utilsServices.priceToCurrency(cartTotalPrice()),
+                  style: TextStyle(
+                    fontSize: 23,
+                    color: CustomColors.customSwatchColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    onPressed: () async {
+                      bool? result = await showOrderConfirmation();
+                      if (result ?? false) {
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return PaymentDialog(
+                              order: appData.orders.first,
+                            );
+                          },
+                        );
+                      }
+                    },
+                    child: const Text(
+                      'Concluir pedido',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 

@@ -12,6 +12,7 @@ class InputFieldWidget extends StatefulWidget {
     this.readOnly = false,
     this.validator,
     this.controller,
+    this.keyboarType,
   });
 
   final String? label;
@@ -22,6 +23,7 @@ class InputFieldWidget extends StatefulWidget {
   final bool readOnly;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
+  final TextInputType? keyboarType;
 
   @override
   State<InputFieldWidget> createState() => _InputFieldWidgetState();
@@ -41,6 +43,7 @@ class _InputFieldWidgetState extends State<InputFieldWidget> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextFormField(
+        keyboardType: widget.keyboarType,
         controller: widget.controller,
         validator: widget.validator,
         readOnly: widget.readOnly,
