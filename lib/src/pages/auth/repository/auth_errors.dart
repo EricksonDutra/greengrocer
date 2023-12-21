@@ -6,6 +6,15 @@ String authErrorsString(String? code) {
     case 'Invalid session token':
       return 'Token invalido ';
 
+    case 'INVALID_FULLNAME':
+      return 'Ocorreu um erro a o cadastrar usuário: Nome inválido';
+
+    case 'INVALID_PHONE':
+      return 'Ocorreu um erro a o cadastrar usuário: Celular inválido';
+
+    case 'INVALID_cpf':
+      return 'Ocorreu um erro a o cadastrar usuário: CPF inválido';
+
     default:
       return 'Um erro não definido ocorreu';
   }

@@ -37,21 +37,20 @@ class AuthController extends GetxController {
         saveTokenAndPrecedToBase();
       },
       error: (msg) {
-        Future<void> signOut() async {
-          //Zerar o user
-          user = UserModel();
-
-          //Remover o token localmente
-          await utilServices.removeLocalData(key: StorageKeys.token);
-
-          //Ir para o login
-          Get.offAllNamed(PagesRoutes.signInRoute);
-        }
-
-        ;
+        signOut();
       },
     );
-    // authRepository.validateToken(token);
+  }
+
+  Future<void> signOut() async {
+    //Zerar o user
+    user = UserModel();
+
+    //Remover o token localmente
+    await utilServices.removeLocalData(key: StorageKeys.token);
+
+    //Ir para o login
+    Get.offAllNamed(PagesRoutes.signInRoute);
   }
 
   void saveTokenAndPrecedToBase() {
@@ -60,6 +59,23 @@ class AuthController extends GetxController {
 
     //Ir para a tela base
     Get.offAllNamed(PagesRoutes.baseRoute);
+  }
+
+  Future<void> signUp() async {
+    isLoading.value = true;
+    AuthResult result = await authRepository.signUp(user);
+
+    isLoading.value = false;
+
+    result.when(success: (user) {
+      this.user = user;
+      saveTokenAndPrecedToBase();
+    }, error: (msg) {
+      utilServices.showToast(
+        message: msg,
+        isError: true,
+      );
+    });
   }
 
   Future<void> signIn({required String email, required String password}) async {

@@ -13,6 +13,7 @@ class InputFieldWidget extends StatefulWidget {
     this.validator,
     this.controller,
     this.keyboarType,
+    this.onSaved,
   });
 
   final String? label;
@@ -22,6 +23,7 @@ class InputFieldWidget extends StatefulWidget {
   final String? initialValue;
   final bool readOnly;
   final String? Function(String?)? validator;
+  final void Function(String?)? onSaved;
   final TextEditingController? controller;
   final TextInputType? keyboarType;
 
@@ -46,6 +48,7 @@ class _InputFieldWidgetState extends State<InputFieldWidget> {
         keyboardType: widget.keyboarType,
         controller: widget.controller,
         validator: widget.validator,
+        onSaved: widget.onSaved,
         readOnly: widget.readOnly,
         initialValue: widget.initialValue,
         inputFormatters: widget.inputFormatters,
