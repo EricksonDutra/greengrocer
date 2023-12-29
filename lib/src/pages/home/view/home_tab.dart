@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/pages/cart/cart_tabs.dart';
 import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
-import 'package:greengrocer/src/config/app_data.dart' as appData;
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:greengrocer/src/pages/common_widgets/custom_shimmer.dart';
@@ -121,7 +120,7 @@ class _HomeTabState extends State<HomeTab> {
                 return Container(
                   padding: const EdgeInsets.only(left: 25),
                   height: 40,
-                  child: !controller.isLoading
+                  child: !controller.isCategoryLoading
                       ? ListView.separated(
                           scrollDirection: Axis.horizontal,
                           separatorBuilder: (_, i) => const SizedBox(width: 10),
@@ -154,10 +153,11 @@ class _HomeTabState extends State<HomeTab> {
               },
             ),
 
+            // Grid - Produtos
             GetBuilder<HomeController>(
               builder: (controller) {
                 return Expanded(
-                  child: !controller.isLoading
+                  child: !controller.isProductLoading
                       ? GridView.builder(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           physics: const BouncingScrollPhysics(),
@@ -167,9 +167,12 @@ class _HomeTabState extends State<HomeTab> {
                             crossAxisSpacing: 10,
                             childAspectRatio: 9 / 11.5,
                           ),
-                          itemCount: appData.items.length,
+                          itemCount: controller.allProducts.length,
                           itemBuilder: (_, i) {
-                            return ItemTile(item: appData.items[i], cartAnimationMethod: itemSelectedCartAnimation);
+                            return ItemTile(
+                              item: controller.allProducts[i],
+                              cartAnimationMethod: itemSelectedCartAnimation,
+                            );
                           },
                         )
                       : GridView.count(
