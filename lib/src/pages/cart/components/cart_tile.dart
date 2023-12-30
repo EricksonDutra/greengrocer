@@ -28,7 +28,7 @@ class _CartTileState extends State<CartTile> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: ListTile(
-        leading: Image.asset(
+        leading: Image.network(
           widget.cartItem.item.imgUrl,
           height: 60,
           width: 60,
