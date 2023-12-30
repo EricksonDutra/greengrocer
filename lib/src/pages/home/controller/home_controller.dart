@@ -13,9 +13,8 @@ class HomeController extends GetxController {
 
   bool isCategoryLoading = false;
   bool isProductLoading = true;
-
-  CategoryModel? currentCategory;
   List<CategoryModel> allCategories = [];
+  CategoryModel? currentCategory;
   List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
   void setLoading(bool value, {bool isProduct = false}) {
@@ -33,7 +32,7 @@ class HomeController extends GetxController {
 
     if (currentCategory!.items.isNotEmpty) return;
 
-    getAllCategories();
+    getAllProducts();
   }
 
   @override
@@ -73,11 +72,12 @@ class HomeController extends GetxController {
       'ItemnsPerPage': itemsPerPage,
     };
     HomeResult<ItemModel> result = await homeRepository.getAllProducts(body);
-    setLoading(false, isProduct: false);
+    setLoading(false, isProduct: true);
 
     result.when(
       success: (data) {
-        currentCategory!.items = data;
+        currentCategory!.items.addAll(data);
+        // print(data);
       },
       error: (msg) {
         utilsServices.showToast(

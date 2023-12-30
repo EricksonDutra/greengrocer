@@ -14,7 +14,7 @@ class HomeRepository {
     );
 
     if (result['result'] != null) {
-      List<CategoryModel> data = (result['result'] as List<Map<String, dynamic>>).map(CategoryModel.fromJson).toList();
+      List<CategoryModel> data = List<Map<String, dynamic>>.from(result['result']).map(CategoryModel.fromJson).toList();
       return HomeResult<CategoryModel>.success(data);
     } else {
       return HomeResult.error('Ocorreu um erro inesperado ao recuperar as categorias');
@@ -30,6 +30,7 @@ class HomeRepository {
 
     if (result['result'] != null) {
       List<ItemModel> data = List<Map<String, dynamic>>.from(result['result']).map(ItemModel.fromJson).toList();
+
       return HomeResult<ItemModel>.success(data);
     } else {
       return HomeResult.error('Ocorreu um erro inesperado ao recuperar os produtos');

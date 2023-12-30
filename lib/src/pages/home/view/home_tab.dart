@@ -141,8 +141,8 @@ class _HomeTabState extends State<HomeTab> {
                               alignment: Alignment.center,
                               margin: EdgeInsets.only(right: 12),
                               child: CustomShimmer(
-                                height: double.infinity,
-                                width: double.infinity,
+                                height: 20,
+                                width: 80,
                                 isRounded: false,
                                 borderRadius: BorderRadius.circular(20),
                               ),
