@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -28,6 +31,11 @@ class UtilsServices {
     initializeDateFormatting();
     DateFormat dateFormat = DateFormat.yMd('pt_BR').add_Hm();
     return dateFormat.format(dateTime);
+  }
+
+  Uint8List decodeQrCodeImage(String value) {
+    String base64String = value.split(',').last;
+    return base64.decode(base64String);
   }
 
   void showToast({required String message, bool isError = false}) {
