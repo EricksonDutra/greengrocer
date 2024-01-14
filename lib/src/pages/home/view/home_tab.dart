@@ -2,6 +2,8 @@ import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:greengrocer/src/pages/base/controller/navigation_controller.dart';
+import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:greengrocer/src/pages/cart/view/cart_tabs.dart';
 import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
@@ -24,6 +26,7 @@ class _HomeTabState extends State<HomeTab> {
 
   final UtilsServices utilsServices = UtilsServices();
   final searchController = TextEditingController();
+  final navigationController = Get.find<NavigationController>();
   late Function(GlobalKey) runAddToCardAnimation;
 
   void itemSelectedCartAnimation(GlobalKey gkImage) {
@@ -42,34 +45,31 @@ class _HomeTabState extends State<HomeTab> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(top: 15, right: 15),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (bc) => const CartTab(),
+            child: GetBuilder<CartController>(
+              builder: (controller) {
+                return GestureDetector(
+                  onTap: () => navigationController.navigatePageView(NavigationTabs.cart),
+                  child: badges.Badge(
+                    badgeStyle: badges.BadgeStyle(
+                      badgeColor: CustomColors.customContrastColor,
+                    ),
+                    badgeContent: Text(
+                      controller.cartItems.length.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                    child: AddToCartIcon(
+                      key: globalKeyCartItems,
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: CustomColors.customSwatchColor,
+                      ),
+                    ),
                   ),
                 );
               },
-              child: badges.Badge(
-                badgeStyle: badges.BadgeStyle(
-                  badgeColor: CustomColors.customContrastColor,
-                ),
-                badgeContent: const Text(
-                  '2',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-                child: AddToCartIcon(
-                  key: globalKeyCartItems,
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: CustomColors.customSwatchColor,
-                  ),
-                ),
-              ),
             ),
           )
         ],

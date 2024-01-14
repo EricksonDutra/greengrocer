@@ -17,14 +17,7 @@ class CartTab extends StatefulWidget {
 
 class _CartTabState extends State<CartTab> {
   final UtilsServices utilsServices = UtilsServices();
-
-  double cartTotalPrice() {
-    // double total = 0;
-    // for (var item in appData.cartItems) {
-    //   total += item.totalPrice();
-    // }
-    return 0;
-  }
+  final cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +34,19 @@ class _CartTabState extends State<CartTab> {
           Expanded(
             child: GetBuilder<CartController>(
               builder: (controller) {
+                if (controller.cartItems.isEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.remove_shopping_cart,
+                        size: 40,
+                        color: CustomColors.customSwatchColor,
+                      ),
+                      Text('Não há itens no carrinho'),
+                    ],
+                  );
+                }
                 return ListView.builder(
                   itemCount: controller.cartItems.length,
                   itemBuilder: (_, i) {
@@ -102,14 +108,7 @@ class _CartTabState extends State<CartTab> {
                     onPressed: () async {
                       bool? result = await showOrderConfirmation();
                       if (result ?? false) {
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (_) {
-                        //     return PaymentDialog(
-                        //       order: appData.orders.first,
-                        //     );
-                        //   },
-                        // );
+                        cartController.checkoutCart();
                       }
                     },
                     child: const Text(

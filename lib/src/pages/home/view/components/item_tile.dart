@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/item_model.dart';
+import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:greengrocer/src/routes/app_pages.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
@@ -19,8 +20,15 @@ class _ItemTileState extends State<ItemTile> {
   final GlobalKey imageGk = GlobalKey();
 
   final UtilsServices utilsServices = UtilsServices();
+  final cartController = Get.find<CartController>();
 
   IconData tileIcon = Icons.add_shopping_cart_outlined;
+
+  Future<void> switchIcon() async {
+    setState(() => tileIcon = Icons.check);
+    await Future.delayed(const Duration(milliseconds: 1500));
+    setState(() => tileIcon = Icons.add_shopping_cart_outlined);
+  }
 
   Future<void> switchColor() async {
     setState(() => tileIcon = Icons.check);
@@ -96,30 +104,36 @@ class _ItemTileState extends State<ItemTile> {
         Positioned(
           top: 4,
           right: 4,
-          child: Container(
-            height: 40,
-            width: 35,
-            decoration: BoxDecoration(
-              color: CustomColors.customSwatchColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                topRight: Radius.circular(20),
-              ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(15),
+              topRight: Radius.circular(20),
             ),
-            child: IconButton(
-              icon: Icon(
-                tileIcon,
-                color: Colors.white,
-                size: 20,
-              ),
-              onPressed: () {
-                switchColor();
+            child: Material(
+              child: InkWell(
+                onTap: () {
+                  switchIcon();
 
-                widget.cartAnimationMethod(imageGk);
-              },
+                  cartController.addItemToCart(item: widget.item);
+
+                  widget.cartAnimationMethod(imageGk);
+                },
+                child: Ink(
+                  height: 40,
+                  width: 35,
+                  decoration: BoxDecoration(
+                    color: CustomColors.customSwatchColor,
+                  ),
+                  child: Icon(
+                    tileIcon,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
