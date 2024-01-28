@@ -24,6 +24,9 @@ class OrderModel {
   @JsonKey(name: 'copiaecola')
   String copyAndPaste;
   double total;
+
+  bool get isOverDue => overdueDateTime.isBefore(DateTime.now());
+
   OrderModel({
     required this.id,
     this.createdDateTime,
