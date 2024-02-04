@@ -42,7 +42,33 @@ class AuthController extends GetxController {
     );
   }
 
-  Future<void> restPassword(String email) async {
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    isLoading.value = true;
+    final result = await authRepository.changePassword(
+      email: user.email!,
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      token: user.token!,
+    );
+
+    isLoading.value = false;
+
+    if (result) {
+      //msg
+      utilServices.showToast(message: 'A senha foi atualizada');
+      //logout
+    } else {
+      utilServices.showToast(
+        message: 'A senha está incorreta',
+        isError: true,
+      );
+    }
+  }
+
+  Future<void> resetPassword(String email) async {
     await authRepository.resetPassword(email);
   }
 

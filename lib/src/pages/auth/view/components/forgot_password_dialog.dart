@@ -80,7 +80,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (_formFieldKey.currentState!.validate()) {
-                      authController.restPassword(emailController.text);
+                      authController.resetPassword(emailController.text);
                       Get.back(result: true);
                     }
                   },

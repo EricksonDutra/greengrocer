@@ -84,6 +84,9 @@ class _ProfileTabState extends State<ProfileTab> {
 
   Future<bool?> _updatePassword() {
     final passwordController = TextEditingController();
+    final newPasswordController = TextEditingController();
+    final curentPasswordController = TextEditingController();
+
     final _formKey = GlobalKey<FormState>();
     return showDialog(
       context: context,
@@ -109,13 +112,15 @@ class _ProfileTabState extends State<ProfileTab> {
                         ),
                       ),
                     ),
-                    const InputFieldWidget(
+                    InputFieldWidget(
+                      controller: curentPasswordController,
                       isSecret: true,
                       icon: Icon(Icons.lock),
                       label: 'Senha atual',
                       validator: passwordValidador,
                     ),
-                    const InputFieldWidget(
+                    InputFieldWidget(
+                      controller: newPasswordController,
                       isSecret: true,
                       icon: Icon(Icons.lock_outline),
                       label: 'Nova senha',
@@ -139,18 +144,28 @@ class _ProfileTabState extends State<ProfileTab> {
                         return null;
                       },
                     ),
+
+                    //botão confirmação
                     SizedBox(
                       height: 45,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        )),
-                        onPressed: () {
-                          _formKey.currentState!.validate();
-                        },
-                        child: const Text('Atualizar'),
-                      ),
+                      child: Obx(() => ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                            onPressed: authController.isLoading.value
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      authController.changePassword(
+                                        currentPassword: newPasswordController.text,
+                                        newPassword: curentPasswordController.text,
+                                      );
+                                    }
+                                    ;
+                                  },
+                            child: authController.isLoading.value ? CircularProgressIndicator() : Text('Atualizar'),
+                          )),
                     ),
                   ],
                 ),
