@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/common_widgets/input_field_widget.dart';
 import 'package:greengrocer/src/services/validators.dart';
-import 'package:greengrocer/src/config/app_data.dart' as appData;
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});

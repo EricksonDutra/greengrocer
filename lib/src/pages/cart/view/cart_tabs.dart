@@ -104,7 +104,7 @@ class _CartTabState extends State<CartTab> {
                             borderRadius: BorderRadius.circular(18),
                           ),
                         ),
-                        onPressed: controller.isCheckoutLoading
+                        onPressed: (controller.isCheckoutLoading || controller.cartItems.isEmpty)
                             ? null
                             : () async {
                                 bool? result = await showOrderConfirmation();
